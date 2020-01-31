@@ -49,7 +49,7 @@ To access the log web site, the user will receive a code on his
 		smartphone and he will have to enter this code on the website to
 		access the log page.
 		
-## People
+## Peoples
 
 We are a group of four students to create this project
 - Natacha RENOU
