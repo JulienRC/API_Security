@@ -10,20 +10,10 @@ every log of personal connection.
 
 ## Installation & Execution
 
-### Need
+### Tools
 
-- Spring Boot IDE : https://spring.io/tools
-- Java
+- Java (v11)
 - Maven
-
-### Project
-
-- Project -> Maven
-- Language -> Java 
-- Spring Boot 2.2.4
-- Packaging -> Jar
-- Java 11
-- Dependencies -> 
 
 ### Run
 
