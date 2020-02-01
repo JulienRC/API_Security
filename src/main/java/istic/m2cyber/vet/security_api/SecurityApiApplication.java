@@ -1,12 +1,16 @@
 package istic.m2cyber.vet.security_api;
 
 import java.security.Principal;
+import java.util.Optional;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import istic.m2.cyber.vet.security_api.service.UserService;
+import istic.m2cyber.vet.security_api.models.User;
 
 @SpringBootApplication
 @Controller
@@ -18,9 +22,14 @@ public class SecurityApiApplication {
 	
 	@RequestMapping({"/", "/home"})
 	public String home(Principal principal, Model model) {
-		if (principal == null)
+		UserService userservi = new UserService();
+		Optional<User> u = userservi.findByGoogleid("1256");
+	    System.out.println("YAS");
+		
+		if (principal == null) {
 			model.addAttribute("isConnected", false);
-		else
+			
+		}else
 			model.addAttribute("isConnected", true);
 		return "Home";
 	}

@@ -16,7 +16,9 @@ public class User {
 	
 	private String email;
 	
-	private String path_picture;
+	private String googleid;
+
+	private String pathpicture;
 
 	public Integer getId() {
 		return id;
@@ -33,13 +35,21 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public String getGoogle_id() {
+		return googleid;
+	}
+
+	public void setGoogle_id(String google_id) {
+		this.googleid = google_id;
+	}
 
 	public String getPath_picture() {
-		return path_picture;
+		return pathpicture;
 	}
 
 	public void setPath_picture(String path_picture) {
-		this.path_picture = path_picture;
+		this.pathpicture = path_picture;
 	}
 	
 	
