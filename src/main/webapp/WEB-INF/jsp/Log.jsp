@@ -8,12 +8,10 @@
 				<th>Id</th>
 				<th>Connection</th>
 			</tr>
-			<c:forEach items="${user_information}" var="item">
-				<tr>
-					<td>${item.id}</td>
-					<td>${item.date}</td>
-				</tr>
-			</c:forEach>
+			<tr th:each="item : ${items}">
+				<td th:utext="${item}"></td>
+				<td>${item.date}</td>
+			</tr>
 		</tbody>
 	</table>
 	<p>This will be the page of the log's history</p>
