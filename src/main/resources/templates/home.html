@@ -1,11 +1,6 @@
-<head>
-<title>HOME - API SECURITY</title>
-</head>
-<body>
-
-	<div th:insert="header :: head"></div>
-
-
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block th:insert="header :: head"/>
 	<div
 		class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
 		<h2>Introduction</h2>
@@ -55,6 +50,6 @@
 
 	<div class="container"></div>
 
-	<div th:insert="footer :: foot"></div>
+<th:block th:insert="footer :: foot"/>
 
-</body>
+
