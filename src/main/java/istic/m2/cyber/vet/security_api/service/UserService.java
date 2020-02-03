@@ -15,7 +15,7 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public Optional<User> findByGoogleid(String google_id) {
+    public User findByGoogleid(String google_id) {
 		return userRepository.findByGoogleid(google_id);
 	}
 	

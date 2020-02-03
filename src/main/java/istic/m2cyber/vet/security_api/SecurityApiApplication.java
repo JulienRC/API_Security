@@ -23,10 +23,10 @@ public class SecurityApiApplication {
 	@RequestMapping({"/", "/home"})
 	public String home(Principal principal, Model model) {
 		UserService userservi = new UserService();
-		Optional<User> u = userservi.findByGoogleid("1256");
+		User u = userservi.findByGoogleid("1256");
 		if( u == null) {
 	    System.out.println("YAS");
-		}
+		}else { System.out.println("YASSSSSSSSSSss"); }
 		
 		if (principal == null) {
 			model.addAttribute("isConnected", false);
