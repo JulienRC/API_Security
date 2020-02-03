@@ -6,14 +6,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/", "/webjars/**").permitAll().anyRequest().authenticated().and()
-				.oauth2Login().defaultSuccessUrl("/check", true).and().logout().logoutUrl("/logout").logoutSuccessUrl("/")
-				.permitAll();
+		http.authorizeRequests().antMatchers("/", "/webjars/**").permitAll();
 	}
 
 }
