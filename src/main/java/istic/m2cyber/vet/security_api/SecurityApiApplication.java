@@ -21,4 +21,9 @@ public class SecurityApiApplication {
 		return "home";
 	}
 	
+	@RequestMapping({"/log"})
+	public String log() {
+		return "log";
+	}
+	
 }

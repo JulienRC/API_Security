@@ -1,0 +1,31 @@
+<head>
+<title>LOGS - API SECURITY</title>
+</head>
+<body>
+
+	<div th:insert="header :: head"></div>
+
+
+	<div
+		class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+		<h1 class="mt-4">Log</h1>
+		<table>
+			<tbody>
+				<tr>
+					<th>Id</th>
+					<th>Connection</th>
+				</tr>
+				<tr th:each="item: ${items}">
+					<td th:text="${item.id}"/>
+					<td th:text="${item.date}">
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+
+	<div class="container"></div>
+
+	<div th:insert="footer :: foot"></div>
+
+</body>
