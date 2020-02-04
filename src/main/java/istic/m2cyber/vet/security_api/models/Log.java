@@ -1,6 +1,6 @@
 package istic.m2cyber.vet.security_api.models;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,35 +13,37 @@ public class Log {
 	
 	@Id 
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer Id;
+	private Integer idlog;
 	
-	private String google_id;
+	private String googleid;
 
-	private Date date;
+	private Timestamp date;
 
-	public Integer getId() {
-		return Id;
+
+	public Integer getIdlog() {
+		return idlog;
 	}
 
-	public void setId(Integer id) {
-		Id = id;
-	}
-	
-
-	public String getGoogle_id() {
-		return google_id;
+	public void setIdlog(Integer idlog) {
+		this.idlog = idlog;
 	}
 
-	public void setGoogle_id(String google_id) {
-		this.google_id = google_id;
+	public String getGoogleid() {
+		return googleid;
 	}
 
-	public Date getDate() {
+	public void setGoogleid(String googleid) {
+		this.googleid = googleid;
+	}
+
+	public Timestamp getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
+
+	
 	
 }

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class User {
 	
 	@Id
-	private Integer id;
+	private Integer iduser;
 	
 	private String email;
 	
@@ -20,12 +20,12 @@ public class User {
 
 	private String pathpicture;
 
-	public Integer getId() {
-		return id;
+	public Integer getIduser() {
+		return iduser;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setIduser(Integer iduser) {
+		this.iduser = iduser;
 	}
 
 	public String getEmail() {
@@ -35,24 +35,21 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public String getGoogle_id() {
+
+	public String getGoogleid() {
 		return googleid;
 	}
 
-	public void setGoogle_id(String google_id) {
-		this.googleid = google_id;
+	public void setGoogleid(String googleid) {
+		this.googleid = googleid;
 	}
 
-	public String getPath_picture() {
+	public String getPathpicture() {
 		return pathpicture;
 	}
 
-	public void setPath_picture(String path_picture) {
-		this.pathpicture = path_picture;
+	public void setPathpicture(String pathpicture) {
+		this.pathpicture = pathpicture;
 	}
-	
-	
-	
 
 }

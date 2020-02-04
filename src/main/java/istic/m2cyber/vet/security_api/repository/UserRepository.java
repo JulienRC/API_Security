@@ -8,6 +8,11 @@ import istic.m2cyber.vet.security_api.models.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>  {
 	
-		User findByGoogleid(String google_id);
+		//User findByGoogleid(String google_id);
+		User findByGoogleid(String googleid);
+		
+		
+		
+		
 		
 }
