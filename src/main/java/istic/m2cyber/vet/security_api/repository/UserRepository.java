@@ -11,6 +11,7 @@ public interface UserRepository extends JpaRepository<User, Long>  {
 		//User findByGoogleid(String google_id);
 		User findByGoogleid(String googleid);
 		
+		User save(User user);
 		
 		
 		

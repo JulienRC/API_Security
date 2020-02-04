@@ -1,5 +1,7 @@
 package istic.m2cyber.vet.security_api.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,10 @@ public class UserService {
     public User findByGoogleid(String googleid) {
 		return userRepository.findByGoogleid(googleid);
 	}
+    
+    @Transactional
+    public User save(User user) {
+      return userRepository.save(user);
+    }
 	
-	
-
 }

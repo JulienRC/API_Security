@@ -2,6 +2,8 @@ package istic.m2cyber.vet.security_api.models;
 
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,6 +14,7 @@ import javax.persistence.Table;
 public class User {
 	
 	@Id
+	@GeneratedValue (strategy = GenerationType.AUTO)
 	private Integer iduser;
 	
 	private String email;
@@ -19,6 +22,18 @@ public class User {
 	private String googleid;
 
 	private String pathpicture;
+	
+	private Long idauthy;
+
+	public User() {
+	}
+	
+	public User(String email, String googleid, String pathpicture) {
+		super();
+		this.email = email;
+		this.googleid = googleid;
+		this.pathpicture = pathpicture;
+	}
 
 	public Integer getIduser() {
 		return iduser;
@@ -51,5 +66,14 @@ public class User {
 	public void setPathpicture(String pathpicture) {
 		this.pathpicture = pathpicture;
 	}
+
+	public Long getIdauthy() {
+		return idauthy;
+	}
+
+	public void setIdauthy(Long idauthy) {
+		this.idauthy = idauthy;
+	}
+	
 
 }
