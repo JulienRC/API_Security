@@ -23,6 +23,7 @@
 			<a class="p-2 text-dark" href="/">Home</a> <a class="p-2 text-dark"
 				href="/log">Logs</a>
 		</nav>
-		<a class="btn btn-outline-primary" href="#">Sign up</a>
+		<a th:if="${isConnected} == true" class="btn btn-outline-primary" href="/logout">Log out</a>
+		<a th:if="${isConnected} == false" class="btn btn-outline-primary" href="/login">Log In</a>
 	</div>
 </th:block>

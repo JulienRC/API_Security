@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.RedirectView;
@@ -16,7 +17,20 @@ import org.springframework.web.servlet.view.RedirectView;
 public class AuthenticationController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login() {
+	public String login(Authentication authentication, Model model) {
+
+		if (authentication == null)
+			model.addAttribute("isConnected", false);
+		else {
+
+			OAuth2User user = ((OAuth2AuthenticationToken) authentication).getPrincipal();
+
+			model.addAttribute("first_name", user.getAttribute("given_name"));
+			model.addAttribute("last_name", user.getAttribute("family_name"));
+			model.addAttribute("email", user.getAttribute("email"));
+			model.addAttribute("picture", user.getAttribute("picture"));
+			model.addAttribute("isConnected", true);
+		}
 		return "login";
 	}
 
@@ -42,10 +56,6 @@ public class AuthenticationController {
 		String url = "http://127.0.0.1:8080";
 		RedirectView view = new RedirectView(url);
 		return view;
-	}
-
-	private OAuth2User getCurrentUser(Authentication auth) {
-		return ((OAuth2AuthenticationToken) auth).getPrincipal();
 	}
 
 }
