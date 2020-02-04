@@ -1,6 +1,8 @@
 package istic.m2cyber.vet.security_api.models;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,8 +19,17 @@ public class Log {
 	
 	private String googleid;
 
-	private Timestamp date;
+	private LocalDateTime date;
+	
+	public Log(){	
+	}
 
+
+	public Log(String googleid, LocalDateTime date) {
+		super();
+		this.googleid = googleid;
+		this.date = date;
+	}
 
 	public Integer getIdlog() {
 		return idlog;
@@ -36,11 +47,11 @@ public class Log {
 		this.googleid = googleid;
 	}
 
-	public Timestamp getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Timestamp date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 

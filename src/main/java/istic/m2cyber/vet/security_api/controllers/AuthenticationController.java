@@ -1,5 +1,9 @@
 package istic.m2cyber.vet.security_api.controllers;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,9 +67,15 @@ public class AuthenticationController {
 	public RedirectView checkUserInDatabase(Authentication authentication) {
 
 		 String user_id = (String)
-		 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("user_id");
+		 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
 		System.out.println(user_id);
 		User u = userservice.findByGoogleid(user_id);
+		
+		LocalDateTime now = LocalDateTime.now();  
+		//Date date = new Date(0);
+       // Timestamp time = new Timestamp(date.getTime());
+        //System.out.println(now);
+        
 		if( u == null) {
 			String email = (String)
 					 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("email");
@@ -75,8 +85,12 @@ public class AuthenticationController {
 
 					
 			userservice.save(new User(email,user_id,picture));
-			//logservice.save(new Log());
 			
+			logservice.save(new Log(user_id,now));
+			
+		}
+		else { 
+			logservice.save(new Log(user_id,now));
 		}
 		String url = "http://127.0.0.1:8080";
 		RedirectView view = new RedirectView(url);
