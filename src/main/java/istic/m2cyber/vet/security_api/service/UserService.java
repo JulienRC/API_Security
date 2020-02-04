@@ -1,5 +1,9 @@
 package istic.m2cyber.vet.security_api.service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +20,6 @@ public class UserService {
 	@Autowired
     private UserRepository userRepository;
 
-
     public User findByGoogleid(String googleid) {
 		return userRepository.findByGoogleid(googleid);
 	}
@@ -25,5 +28,6 @@ public class UserService {
     public User save(User user) {
       return userRepository.save(user);
     }
+    
 	
 }

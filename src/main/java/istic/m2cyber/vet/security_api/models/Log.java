@@ -30,6 +30,7 @@ public class Log {
 		this.googleid = googleid;
 		this.date = date;
 	}
+	
 
 	public Integer getIdlog() {
 		return idlog;

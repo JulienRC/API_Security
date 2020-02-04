@@ -34,7 +34,7 @@ public class User {
 		this.googleid = googleid;
 		this.pathpicture = pathpicture;
 	}
-
+	
 	public Integer getIduser() {
 		return iduser;
 	}

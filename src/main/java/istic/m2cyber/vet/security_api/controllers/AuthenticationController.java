@@ -1,7 +1,8 @@
 package istic.m2cyber.vet.security_api.controllers;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +50,22 @@ public class AuthenticationController {
 		}
 		return "login";
 	}
+	
+	public String StringInHashWithSalt(String string){
+        String output = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            byte[] bytes = md.digest(string.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++){
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            output = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public RedirectView logout(Authentication authentication, HttpServletRequest request,
@@ -68,13 +85,9 @@ public class AuthenticationController {
 
 		 String user_id = (String)
 		 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
-		System.out.println(user_id);
-		User u = userservice.findByGoogleid(user_id);
 		
-		LocalDateTime now = LocalDateTime.now();  
-		//Date date = new Date(0);
-       // Timestamp time = new Timestamp(date.getTime());
-        //System.out.println(now);
+		 User u = userservice.findByGoogleid(StringInHashWithSalt(user_id));
+		 LocalDateTime now = LocalDateTime.now();  
         
 		if( u == null) {
 			String email = (String)
@@ -84,13 +97,13 @@ public class AuthenticationController {
 					 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("picture");
 
 					
-			userservice.save(new User(email,user_id,picture));
+			userservice.save(new User(StringInHashWithSalt(email),StringInHashWithSalt(user_id),StringInHashWithSalt(picture)));
 			
-			logservice.save(new Log(user_id,now));
+			logservice.save(new Log(StringInHashWithSalt(user_id),now));
 			
 		}
 		else { 
-			logservice.save(new Log(user_id,now));
+			logservice.save(new Log(StringInHashWithSalt(user_id),now));
 		}
 		String url = "http://127.0.0.1:8080";
 		RedirectView view = new RedirectView(url);
