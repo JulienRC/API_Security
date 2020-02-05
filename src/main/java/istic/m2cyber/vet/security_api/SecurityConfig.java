@@ -9,7 +9,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/webjars/**").permitAll().anyRequest().authenticated().and()
+		http.authorizeRequests().antMatchers("/webjars/**", "/css/*", "/images/*").permitAll().anyRequest().authenticated().and()
 				.oauth2Login().loginPage("/login").permitAll().defaultSuccessUrl("/check_user_in_database", true)
 				.failureUrl("/error").and().logout().logoutUrl("/logout").invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID");

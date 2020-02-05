@@ -1,10 +1,18 @@
 <th:block th:insert="header :: head" />
+<div
+	class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h1 class="display-4">Sign In</h1>
 
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-      <h1 class="display-4">Sign In</h1>
-      <a href="/oauth2/authorization/google" class="lead">Sign in with Google</a>
-    </div>
+	<a class="btn btn-outline-dark" href="/oauth2/authorization/google"
+		role="button" style="text-transform: none"> <img width="20px"
+		style="margin-bottom: 3px; margin-right: 5px" alt="Google sign-in"
+		src="/images/signin.png" /> Login with Google
+	</a>
 
-    <div class="container">      
 
-<th:block th:insert="footer :: foot" />
+</div>
+
+
+<div class="container">
+
+	<th:block th:insert="footer :: foot" />
