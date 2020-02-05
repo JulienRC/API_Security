@@ -41,6 +41,8 @@ public class OTPController {
     @GetMapping({"/otp"})
     public String otp(Authentication authentication) throws AuthyException {
     	
+    	utils = new Utils();
+    	
     	String user_id = (String)
     			 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
     	
