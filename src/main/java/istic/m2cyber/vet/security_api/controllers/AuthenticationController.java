@@ -48,12 +48,6 @@ public class AuthenticationController {
 	
 	private Utils utils;
 	
-	@Value("${spring.security.oauth2.client.registration.google.client-id}")
-	private String client_id;
-	
-	@Value("${spring.security.oauth2.client.registration.google.client-secret}")
-	private String client_secret;
-	
 	private final OAuth2AuthorizedClientService authorizedClientService;
 
 	public AuthenticationController(OAuth2AuthorizedClientService authorizedClientService) {
@@ -104,7 +98,9 @@ public class AuthenticationController {
 				String email = (String)
 						 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("email");
 				
-				List<PhoneNumber> listetel = getPhoneNumbers(authentication);
+				Utils utils = new Utils();
+				
+				List<PhoneNumber> listetel = utils.getPhoneNumbers(authentication, this.authorizedClientService);
 				
 				if(listetel == null) {
 				userservice.save(new User(utils.StringInHashWithSalt(email),utils.StringInHashWithSalt(user_id)));
@@ -122,25 +118,6 @@ public class AuthenticationController {
 		String url = "http://127.0.0.1:8080";
 		RedirectView view = new RedirectView(url);
 		return view;
-	}
-	
-	private List<PhoneNumber> getPhoneNumbers(Authentication authentication) throws IOException {
-		OAuth2AuthenticationToken oauth2AuthToken = ((OAuth2AuthenticationToken) authentication);
-
-		OAuth2AccessToken access_token = this.authorizedClientService
-				.loadAuthorizedClient(oauth2AuthToken.getAuthorizedClientRegistrationId(), oauth2AuthToken.getName())
-				.getAccessToken();
-
-		GoogleCredential credential = new GoogleCredential.Builder().setTransport(new NetHttpTransport())
-				.setJsonFactory(new JacksonFactory()).setClientSecrets(client_id, client_secret).build()
-				.setAccessToken(access_token.getTokenValue());
-
-		PeopleService peopleService = new PeopleService.Builder(new NetHttpTransport(), new JacksonFactory(), credential).build();
-
-		Person profile = peopleService.people().get("people/me").setRequestMaskIncludeField("person.phone_numbers").execute();
-
-		List<PhoneNumber> phoneList = profile.getPhoneNumbers();
-		return phoneList;
 	}
 
 }
