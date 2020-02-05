@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.authy.AuthyApiClient;
 import com.authy.AuthyException;
@@ -51,8 +51,7 @@ public class OTPController {
     	System.out.println("AuthyID = " + u.getIdauthy());
     	
     	if(null == u.getIdauthy()) {
-    		RedirectView view = new RedirectView("http://127.0.0.1:8080/addPhone");
-    		return "addPhone";
+    		return "redirect:/addPhone";
     	}
     	
     	AuthyApiClient client = new AuthyApiClient(API_KEY);
@@ -74,12 +73,11 @@ public class OTPController {
     	System.out.println(timeStampSeconds);
     	startTimestamp = timeStampSeconds;
     	
-    	RedirectView view = new RedirectView("http://127.0.0.1:8080/otp");
 		return "otp";
     }
     
     @PostMapping({"/otp"})
-    public RedirectView otpForm(@RequestParam String otp) throws AuthyException {
+    public String otpForm(@RequestParam String otp) throws AuthyException {
     	
     	Instant instant = Instant.now();
     	long timeStampSeconds = instant.getEpochSecond();
@@ -113,35 +111,49 @@ public class OTPController {
             System.out.println("BAD OTP !");
         }*/
     	
-    	RedirectView view;
-
     	if("123".equals(otp)) {
     		System.out.println("GOOD OTP !");
-    		view = new RedirectView("http://127.0.0.1:8080/log");
-    		return view;
+    		return "redirect:/log";
     	}else {
     		System.out.println("BAD OTP !");
-    		view = new RedirectView("http://127.0.0.1:8080/errorLog");
-    		return view;
+    		return "redirect:/errorLog";
     	} 	
     }
     
     @GetMapping({"/addPhone"})
-    public String addPhoneGet() {
+    public String addPhoneGet(Authentication authentication, Model model) {
     	System.out.println("GET addPhone !");
+    	
+    	utils = new Utils();
+    	
+    	String user_id = (String)
+    			 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
+    	
+ 
+    	User u = userservice.findByGoogleid(utils.StringInHashWithSalt(user_id));
+    	
+    	//model.addAttribute("nbPhone", u.getTelephone());
+    	System.out.println(model.getAttribute("nbPhone"));
     	return "/addPhone";
     }
     
     @PostMapping({"/addPhone"})
-    public RedirectView addPhone(@RequestParam String phone, @RequestParam String country) {
+    public String addPhone(Authentication authentication, @RequestParam String phone, @RequestParam String countryCode) throws AuthyException {
     	// Faire attention à la forme de la String passée
     	
-    	System.out.println("Phone added : " + phone);
-    	System.out.println("Country code : " + country);
+    	utils = new Utils();
     	
-    	AuthyApiClient client = new AuthyApiClient(API_KEY);
-    	/*Users users = client.getUsers();
-    	com.authy.api.User user = users.createUser("julien.royon-chalendard@etudiant.univ-rennes1.fr", "62-414-3661", "33");
+    	String user_id = (String)
+    			 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
+    	
+    	User u = userservice.findByGoogleid(utils.StringInHashWithSalt(user_id));
+    	
+    	System.out.println("Phone added : " + phone);
+    	System.out.println("Country code : " + countryCode);
+    	
+    	/*AuthyApiClient client = new AuthyApiClient(API_KEY);
+    	Users users = client.getUsers();
+    	com.authy.api.User user = users.createUser(u.getEmail(), phone, countryCode);
     	
         if (user.isOk()) {
             System.out.println(user.getId());
@@ -149,8 +161,10 @@ public class OTPController {
             System.out.println(user.getError());
         }*/
     	
-    	RedirectView view = new RedirectView("http://127.0.0.1:8080/");
-		return view;
+    	//u.setIdauthy(user.getId());
+    	//u.setIdauthy(123456);
+    	System.out.println(u.getEmail());
+		return "redirect:/";
     }
     
     @GetMapping({"/errorLog"})

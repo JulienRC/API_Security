@@ -7,14 +7,15 @@
    <body>
       <h1>Add Phone</h1>
       <h2>The phone number will be used to send the OTP</h2>
-       
+      <h3 th:if="${nbPhone} != null"> Your default phone number from google is : <a th:utext="${nbPhone}"></a></h3>
+      <h3 th:if="${nbPhone} == null"> No phone number </h3>
       <form action="#" th:action="@{/addPhone}" method="post">
       	<table>
       		<tr>
       			<td>Phone number : <input type="tel" name="phone" pattern="[0-9]{2}-[0-9]{3}-[0-9]{4}" required/>Format: 12-345-6789</td>	
       		</tr>
       		<tr>
-      			<td>Country code : <input type="text" name="country" required/></td>
+      			<td>Country code : <input type="text" name="countryCode" required/></td>
       		</tr>
       		<tr>
       			<td><input value="Submit" type="submit"/></td>
