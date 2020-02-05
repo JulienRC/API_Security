@@ -1,12 +1,10 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8" />
-<title>Welcome</title>
-</head>
-   <body>
-      <h1>Unauthorized access to connection logs</h1>
-         
-         <a class="p-2 text-dark" href="/">Home</a>
-   </body>
-</html>
+<th:block th:insert="header :: head" />
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h1 class="display-4">Error</h1>
+      <p class="lead">Unauthorized access to connection logs</p>
+    </div>
+
+    <div class="container">      
+
+<th:block th:insert="footer :: foot" />

@@ -1,14 +1,14 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8" />
-<title>Welcome</title>
-</head>
-   <body>
-      <h1>Add Phone</h1>
-      <h2>The phone number will be used to send the OTP</h2>
+
+
+<th:block th:insert="header :: head" />
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h3 th:if="${nbPhone} != null"> Your default phone number from google is : <a th:utext="${nbPhone}"></a></h3>
       <h3 th:if="${nbPhone} == null"> No phone number </h3>
+    </div>
+
+    <div class="container">
+		
       <form action="#" th:action="@{/addPhone}" method="post">
       	<table>
       		<tr>
@@ -22,7 +22,5 @@
       		</tr>
       	</table>
       </form>
-       
-   </body>
-   
-</html>
+
+<th:block th:insert="footer :: foot" />

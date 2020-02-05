@@ -1,6 +1,5 @@
 package istic.m2cyber.vet.security_api.models;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;

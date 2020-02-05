@@ -39,7 +39,7 @@ public class OTPController {
     public static long startTimestamp;
     
     @GetMapping({"/otp"})
-    public String otp(Authentication authentication) throws AuthyException {
+    public String otp(Authentication authentication, Model model) throws AuthyException {
     	
     	utils = new Utils();
     	
@@ -72,6 +72,12 @@ public class OTPController {
     	long timeStampSeconds = instant.getEpochSecond();
     	System.out.println(timeStampSeconds);
     	startTimestamp = timeStampSeconds;
+    	
+    	if (authentication == null)
+			model.addAttribute("isConnected", false);
+		else {
+			model.addAttribute("isConnected", true);
+		}
     	
 		return "otp";
     }
@@ -164,6 +170,7 @@ public class OTPController {
     @GetMapping({"/errorLog"})
     public String errorLogGet() {
     	System.out.println("GET errorLog !");
+    	
     	return "/errorLog";
     }
     

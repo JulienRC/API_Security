@@ -1,13 +1,13 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8" />
-<title>Welcome</title>
-</head>
-   <body>
-      <h1>One Time Password</h1>
-       
-      <form action="#" th:action="@{/otp}" method="post">
+<th:block th:insert="header :: head" />
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h1 class="display-4">One Time Password</h1>
+      <p class="lead">Insert the code :</p>
+    </div>
+
+    <div class="container">      
+	
+		<form action="#" th:action="@{/otp}" method="post">
       	<table>
       		<tr>
       			<td><input name="otp" type="text"/></td>
@@ -15,7 +15,4 @@
       		</tr>
       	</table>
       </form>
-       
-   </body>
-   
-</html>
+<th:block th:insert="footer :: foot" />
