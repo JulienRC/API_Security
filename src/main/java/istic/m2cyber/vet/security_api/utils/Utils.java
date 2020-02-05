@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -20,12 +19,6 @@ import com.google.api.services.people.v1.model.Person;
 import com.google.api.services.people.v1.model.PhoneNumber;
 
 public class Utils {
-
-	@Value("${spring.security.oauth2.client.registration.google.client-id}")
-	private String client_id;
-
-	@Value("${spring.security.oauth2.client.registration.google.client-secret}")
-	private String client_secret;
 
 	public Utils() {
 	}
@@ -54,7 +47,7 @@ public class Utils {
 	 * @throws IOException
 	 */
 	public List<PhoneNumber> getPhoneNumbers(Authentication authentication,
-			OAuth2AuthorizedClientService oauth2AuthorizedClientService) throws IOException {
+			OAuth2AuthorizedClientService oauth2AuthorizedClientService, String client_id, String client_secret) throws IOException {
 		
 		OAuth2AuthenticationToken oauth2AuthToken = ((OAuth2AuthenticationToken) authentication);
 		

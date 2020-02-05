@@ -1,24 +1,32 @@
 <th:block th:insert="header :: head" />
 
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-      <h3 th:if="${nbPhone} != null"> Your default phone number from google is : <a th:utext="${nbPhone}"></a></h3>
-      <h3 th:if="${nbPhone} == null"> No phone number </h3>
-    </div>
+<div
+	class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+	<h3 th:if="${nbPhone} != null">
+		Your default phone number from google is : <a th:utext="${nbPhone}"></a>
+	</h3>
+	<h3 th:if="${nbPhone} == null">No phone number</h3>
+</div>
 
-    <div class="container">
-		
-      <form action="#" th:action="@{/addPhone}" method="post">
-      	<table>
-      		<tr>
-      			<td>Phone number : <input type="tel" name="phone" pattern="[0-9]{2}-[0-9]{3}-[0-9]{4}" required/>Format: 12-345-6789</td>	
-      		</tr>
-      		<tr>
-      			<td>Country code : <input type="text" name="countryCode" required/></td>
-      		</tr>
-      		<tr>
-      			<td><input value="Submit" type="submit"/></td>
-      		</tr>
-      	</table>
-      </form>
+<div class="container">
 
-<th:block th:insert="footer :: foot" />
+	<form action="#" th:action="@{/addPhone}" method="post">
+		<div class="form-row">
+			<div class="col">
+				<label for="phone">Phone Number</label> <input type="tel"
+					class="form-control" name="phone"
+					pattern="[0-9]{2}-[0-9]{3}-[0-9]{4}"
+					placeholder="Format: 12-345-6789" required />
+			</div>
+			<div class="col">
+				<label for="countrycode">Country code</label> <input type="text"
+					class="form-control" name="countryCode" required />
+			</div>
+
+		</div>
+		<br/>
+		<bouton class="btn btn-primary" type="submit">Add phone number</bouton>
+
+	</form>
+
+	<th:block th:insert="footer :: foot" />

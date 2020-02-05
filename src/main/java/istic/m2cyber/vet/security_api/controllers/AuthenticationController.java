@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -36,8 +37,14 @@ public class AuthenticationController {
 
 	@Autowired
 	private LogService logservice;
-
+	
 	private Utils utils;
+	
+	@Value("${spring.security.oauth2.client.registration.google.client-id}")
+	private String client_id;
+
+	@Value("${spring.security.oauth2.client.registration.google.client-secret}")
+	private String client_secret;
 
 	private final OAuth2AuthorizedClientService authorizedClientService;
 
@@ -47,24 +54,11 @@ public class AuthenticationController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(Authentication authentication, Model model) {
+	public Object login(Authentication authentication, Model model) {
 
 		// If the visitor isn't authenticate then we indicate it.
-		if (authentication == null)
-			model.addAttribute("isConnected", false);
-
-		else {
-			
-			// We get user object in order to get attributes.
-			OAuth2User user = ((OAuth2AuthenticationToken) authentication).getPrincipal();
-
-			/** Remove attributes that are not used in html **/
-			model.addAttribute("first_name", user.getAttribute("given_name"));
-			model.addAttribute("last_name", user.getAttribute("family_name"));
-			model.addAttribute("email", user.getAttribute("email"));
-			model.addAttribute("picture", user.getAttribute("picture"));
-			model.addAttribute("isConnected", true);
-		}
+		if (authentication != null)
+			return new RedirectView("");
 
 		return "login";
 	}
@@ -97,7 +91,7 @@ public class AuthenticationController {
 			String email = (String) ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttributes()
 					.get("email");
 
-			List<PhoneNumber> listetel = this.utils.getPhoneNumbers(authentication, this.authorizedClientService);
+			List<PhoneNumber> listetel = this.utils.getPhoneNumbers(authentication, this.authorizedClientService, this.client_id, this.client_secret);
 
 			if (listetel == null)
 				this.userservice.save(
