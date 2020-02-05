@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.authy.AuthyApiClient;
 import com.authy.AuthyException;
 import com.authy.api.Hash;
+import com.authy.api.Token;
 import com.authy.api.Tokens;
 import com.authy.api.Users;
 
@@ -32,7 +33,6 @@ public class OTPController {
 	// Your API key from twilio.com/console/authy/applications
     // DANGER! This is insecure. See http://twil.io/secure
     public static final String API_KEY = "gOa7RAKNd0bmxvLUr8468e69ffAz9EYT";
-    public static final String OTP = "123";
     // In seconds
     public static final int otpValidityTime = 20;
     
@@ -46,7 +46,6 @@ public class OTPController {
     	String user_id = (String)
     			 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
     	
- 
     	User u = userservice.findByGoogleid(utils.StringInHashWithSalt(user_id));
     	System.out.println("AuthyID = " + u.getIdauthy());
     	
@@ -58,13 +57,14 @@ public class OTPController {
     	
         Users users = client.getUsers();
         
-        /*Hash response = users.requestSms(u.getIdauthy());
+        Hash response = users.requestSms(u.getIdauthy());
+        System.out.println(u.getIdauthy());
         
         if (response.isOk()) {
             System.out.println(response.getMessage());
         } else {
             System.out.println(response.getError());
-        }*/
+        }
         
         System.out.println("Generate OTP !");
     	
@@ -77,7 +77,7 @@ public class OTPController {
     }
     
     @PostMapping({"/otp"})
-    public String otpForm(@RequestParam String otp) throws AuthyException {
+    public String otpForm(Authentication authentication, @RequestParam String otp) throws AuthyException {
     	
     	Instant instant = Instant.now();
     	long timeStampSeconds = instant.getEpochSecond();
@@ -88,36 +88,28 @@ public class OTPController {
     	System.out.println("Post OTP !");
     	System.out.println(otp);
     	
+    	utils = new Utils();
+    	
+    	String user_id = (String)
+    			 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
+ 
+    	User u = userservice.findByGoogleid(utils.StringInHashWithSalt(user_id));
+    	
     	AuthyApiClient client = new AuthyApiClient(API_KEY);
     	
-    	/*if(diffTimestamp < otpValidityTime) {
-    		if(OTP.equals(otp)) {
-    			System.out.println("GOOD OTP !");
-        	} else {
-                System.out.println("BAD OTP !");
-            }	
-		}else {
-			System.out.println("OTP expired !");
-		}*/
-    	
     	Tokens tokens = client.getTokens();
-        /*Token verify = tokens.verify(227867601, otp);
+        Token verify = tokens.verify(u.getIdauthy(), otp);
         
         if (verify.isOk()) {
             System.out.println(verify.toMap());
             System.out.println("GOOD OTP !");
+            return "redirect:/log";
         } else {
             System.out.println(verify.getError());
             System.out.println("BAD OTP !");
-        }*/
+            return "redirect:/errorLog";
+        }
     	
-    	if("123".equals(otp)) {
-    		System.out.println("GOOD OTP !");
-    		return "redirect:/log";
-    	}else {
-    		System.out.println("BAD OTP !");
-    		return "redirect:/errorLog";
-    	} 	
     }
     
     @GetMapping({"/addPhone"})
@@ -128,11 +120,10 @@ public class OTPController {
     	
     	String user_id = (String)
     			 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
-    	
  
     	User u = userservice.findByGoogleid(utils.StringInHashWithSalt(user_id));
     	
-    	//model.addAttribute("nbPhone", u.getTelephone());
+    	model.addAttribute("nbPhone", u.getTelephone());
     	System.out.println(model.getAttribute("nbPhone"));
     	return "/addPhone";
     }
@@ -146,24 +137,27 @@ public class OTPController {
     	String user_id = (String)
     			 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
     	
+    	String email = (String)
+   			 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("email");
+    	
     	User u = userservice.findByGoogleid(utils.StringInHashWithSalt(user_id));
     	
     	System.out.println("Phone added : " + phone);
     	System.out.println("Country code : " + countryCode);
     	
-    	/*AuthyApiClient client = new AuthyApiClient(API_KEY);
+    	AuthyApiClient client = new AuthyApiClient(API_KEY);
     	Users users = client.getUsers();
-    	com.authy.api.User user = users.createUser(u.getEmail(), phone, countryCode);
+    	com.authy.api.User user = users.createUser(email, phone, countryCode);
     	
         if (user.isOk()) {
             System.out.println(user.getId());
         } else {
             System.out.println(user.getError());
-        }*/
+        }
     	
-    	//u.setIdauthy(user.getId());
-    	//u.setIdauthy(123456);
-    	System.out.println(u.getEmail());
+    	u.setIdauthy(user.getId());
+    	u.setTelephone(phone);
+    	userservice.save(u);
 		return "redirect:/";
     }
     
