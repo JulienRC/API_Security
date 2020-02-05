@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Welcome</title>
+</head>
+   <body>
+      <h1>One Time Password</h1>
+       
+      <form action="#" th:action="@{/otp}" method="post">
+      	<table>
+      		<tr>
+      			<td><input name="otp" type="text"/></td>
+      			<td><input value="sub" type="submit"/></td>
+      		</tr>
+      	</table>
+      </form>
+       
+   </body>
+   
+</html>

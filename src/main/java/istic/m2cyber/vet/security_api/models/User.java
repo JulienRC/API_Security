@@ -23,7 +23,7 @@ public class User {
 
 	private String pathpicture;
 	
-	private Long idauthy;
+	private Integer idauthy;
 
 	public User() {
 	}
@@ -67,11 +67,11 @@ public class User {
 		this.pathpicture = pathpicture;
 	}
 
-	public Long getIdauthy() {
+	public Integer getIdauthy() {
 		return idauthy;
 	}
 
-	public void setIdauthy(Long idauthy) {
+	public void setIdauthy(Integer idauthy) {
 		this.idauthy = idauthy;
 	}
 	

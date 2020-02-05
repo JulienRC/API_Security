@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import istic.m2cyber.vet.security_api.controllers.OTPController;
 import istic.m2cyber.vet.security_api.models.Log;
 import istic.m2cyber.vet.security_api.repository.LogRepository;
 import istic.m2cyber.vet.security_api.service.LogService;
@@ -68,11 +69,11 @@ public class SecurityApiApplication {
 
 	@RequestMapping({ "/log" })
 	public String log(Authentication authentication, Model model) {
-
+		
 		if (authentication == null)
 			model.addAttribute("isConnected", false);
 		else {
-
+			
 			OAuth2User user = ((OAuth2AuthenticationToken) authentication).getPrincipal();
 
 			model.addAttribute("first_name", user.getAttribute("given_name"));
