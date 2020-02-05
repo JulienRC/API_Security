@@ -22,6 +22,8 @@ public class User {
 	private String googleid;
 	
 	private Integer idauthy;
+	
+	private String telephone;
 
 	public User() {
 	}
@@ -32,6 +34,14 @@ public class User {
 		this.googleid = googleid;
 	}
 	
+	
+	public User(String email, String googleid, String telephone) {
+		super();
+		this.email = email;
+		this.googleid = googleid;
+		this.telephone = telephone;
+	}
+
 	public Integer getIduser() {
 		return iduser;
 	}
@@ -63,6 +73,15 @@ public class User {
 	public void setIdauthy(Integer idauthy) {
 		this.idauthy = idauthy;
 	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+	
 	
 
 }

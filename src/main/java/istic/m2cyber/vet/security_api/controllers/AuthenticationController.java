@@ -92,7 +92,7 @@ public class AuthenticationController {
 	}
 
 	@RequestMapping(value = "/check_user_in_database", method = RequestMethod.GET)
-	public RedirectView checkUserInDatabase(Authentication authentication) {
+	public RedirectView checkUserInDatabase(Authentication authentication) throws IOException {
 		utils = new Utils();
 		 String user_id = (String)
 		 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
@@ -100,18 +100,25 @@ public class AuthenticationController {
 		 User u = userservice.findByGoogleid(utils.StringInHashWithSalt(user_id));
 		 LocalDateTime now = LocalDateTime.now();  
         
-		if( u == null) {
-			String email = (String)
-					 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("email");
-			
-			userservice.save(new User(utils.StringInHashWithSalt(email),utils.StringInHashWithSalt(user_id)));
-			
-			logservice.save(new Log(utils.StringInHashWithSalt(user_id),now));
-			
-		}
-		else { 
-			logservice.save(new Log(utils.StringInHashWithSalt(user_id),now));
-		}
+		 if( u == null) {
+				String email = (String)
+						 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("email");
+				
+				List<PhoneNumber> listetel = getPhoneNumbers(authentication);
+				
+				if(listetel == null) {
+				userservice.save(new User(utils.StringInHashWithSalt(email),utils.StringInHashWithSalt(user_id)));
+				}
+				else {
+					String tel = listetel.get(0).getValue();
+					userservice.save(new User(utils.StringInHashWithSalt(email),utils.StringInHashWithSalt(user_id),utils.StringInHashWithSalt(tel)));
+				}
+				logservice.save(new Log(utils.StringInHashWithSalt(user_id),now));
+				
+			}
+			else { 
+				logservice.save(new Log(utils.StringInHashWithSalt(user_id),now));
+			}
 		String url = "http://127.0.0.1:8080";
 		RedirectView view = new RedirectView(url);
 		return view;
