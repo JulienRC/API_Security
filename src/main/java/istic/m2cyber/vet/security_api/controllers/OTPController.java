@@ -19,12 +19,15 @@ import com.authy.api.Users;
 
 import istic.m2cyber.vet.security_api.models.User;
 import istic.m2cyber.vet.security_api.service.UserService;
+import istic.m2cyber.vet.security_api.utils.Utils;
 
 @Controller
 public class OTPController {
 	
 	@Autowired
 	private UserService userservice;
+	
+	private Utils utils;
 
 	// Your API key from twilio.com/console/authy/applications
     // DANGER! This is insecure. See http://twil.io/secure
@@ -41,8 +44,8 @@ public class OTPController {
     	String user_id = (String)
     			 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
     	
-    	AuthenticationController authCont = new AuthenticationController();
-    	User u = userservice.findByGoogleid(authCont.StringInHashWithSalt(user_id));
+ 
+    	User u = userservice.findByGoogleid(utils.StringInHashWithSalt(user_id));
     	System.out.println("AuthyID = " + u.getIdauthy());
     	
     	if(null == u.getIdauthy()) {

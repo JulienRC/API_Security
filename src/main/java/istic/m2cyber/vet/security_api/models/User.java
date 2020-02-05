@@ -20,19 +20,16 @@ public class User {
 	private String email;
 	
 	private String googleid;
-
-	private String pathpicture;
 	
 	private Integer idauthy;
 
 	public User() {
 	}
 	
-	public User(String email, String googleid, String pathpicture) {
+	public User(String email, String googleid) {
 		super();
 		this.email = email;
 		this.googleid = googleid;
-		this.pathpicture = pathpicture;
 	}
 	
 	public Integer getIduser() {
@@ -57,14 +54,6 @@ public class User {
 
 	public void setGoogleid(String googleid) {
 		this.googleid = googleid;
-	}
-
-	public String getPathpicture() {
-		return pathpicture;
-	}
-
-	public void setPathpicture(String pathpicture) {
-		this.pathpicture = pathpicture;
 	}
 
 	public Integer getIdauthy() {

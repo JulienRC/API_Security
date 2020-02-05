@@ -35,6 +35,7 @@ import istic.m2cyber.vet.security_api.models.Log;
 import istic.m2cyber.vet.security_api.models.User;
 import istic.m2cyber.vet.security_api.service.LogService;
 import istic.m2cyber.vet.security_api.service.UserService;
+import istic.m2cyber.vet.security_api.utils.Utils;
 
 @Controller
 public class AuthenticationController {
@@ -44,6 +45,8 @@ public class AuthenticationController {
 	
 	@Autowired
 	private LogService logservice;
+	
+	private Utils utils;
 	
 	@Value("${spring.security.oauth2.client.registration.google.client-id}")
 	private String client_id;
@@ -75,22 +78,6 @@ public class AuthenticationController {
 		return "login";
 	}
 	
-	public String StringInHashWithSalt(String string){
-        String output = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            byte[] bytes = md.digest(string.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++){
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            output = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return output;
-    }
-
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public RedirectView logout(Authentication authentication, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -106,28 +93,24 @@ public class AuthenticationController {
 
 	@RequestMapping(value = "/check_user_in_database", method = RequestMethod.GET)
 	public RedirectView checkUserInDatabase(Authentication authentication) {
-
+		utils = new Utils();
 		 String user_id = (String)
 		 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("sub");
 		
-		 User u = userservice.findByGoogleid(StringInHashWithSalt(user_id));
+		 User u = userservice.findByGoogleid(utils.StringInHashWithSalt(user_id));
 		 LocalDateTime now = LocalDateTime.now();  
         
 		if( u == null) {
 			String email = (String)
 					 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("email");
 			
-			String picture = (String)
-					 ((OAuth2AuthenticationToken)authentication).getPrincipal().getAttributes().get("picture");
-
-					
-			userservice.save(new User(StringInHashWithSalt(email),StringInHashWithSalt(user_id),StringInHashWithSalt(picture)));
+			userservice.save(new User(utils.StringInHashWithSalt(email),utils.StringInHashWithSalt(user_id)));
 			
-			logservice.save(new Log(StringInHashWithSalt(user_id),now));
+			logservice.save(new Log(utils.StringInHashWithSalt(user_id),now));
 			
 		}
 		else { 
-			logservice.save(new Log(StringInHashWithSalt(user_id),now));
+			logservice.save(new Log(utils.StringInHashWithSalt(user_id),now));
 		}
 		String url = "http://127.0.0.1:8080";
 		RedirectView view = new RedirectView(url);

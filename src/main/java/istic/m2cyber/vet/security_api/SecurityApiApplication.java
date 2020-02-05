@@ -21,6 +21,7 @@ import istic.m2cyber.vet.security_api.controllers.OTPController;
 import istic.m2cyber.vet.security_api.models.Log;
 import istic.m2cyber.vet.security_api.repository.LogRepository;
 import istic.m2cyber.vet.security_api.service.LogService;
+import istic.m2cyber.vet.security_api.utils.Utils;
 
 @SpringBootApplication
 @Controller
@@ -28,26 +29,12 @@ public class SecurityApiApplication {
 	
 	@Autowired
 	private LogService logService;
+	
+	private Utils utils;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SecurityApiApplication.class, args);
 	}
-	
-	private String StringInHashWithSalt(String string){
-        String output = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            byte[] bytes = md.digest(string.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++){
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            output = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return output;
-    }
 
 	@RequestMapping({ "/" })
 	public String home(Authentication authentication, Model model) {
@@ -83,7 +70,8 @@ public class SecurityApiApplication {
 			model.addAttribute("isConnected", true);
 			
 			// LOG 
-			List<Log> listLogDB = logService.findByGoogleid(StringInHashWithSalt(user.getAttribute("sub")));
+			utils = new Utils();
+			List<Log> listLogDB = logService.findByGoogleid(utils.StringInHashWithSalt(user.getAttribute("sub")));
 			List<String> list = new ArrayList<String>();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			for(Log log : listLogDB) {
