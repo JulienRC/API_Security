@@ -1,45 +1,32 @@
 package istic.m2cyber.vet.security_api.models;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-
 @Entity
 @Table(name = "user")
 public class User {
-	
+
 	@Id
-	@GeneratedValue (strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer iduser;
-	
+
 	private String email;
-	
+
 	private String googleid;
-	
+
 	private Integer idauthy;
-	
-	private String telephone;
 
 	public User() {
 	}
-	
+
 	public User(String email, String googleid) {
 		super();
 		this.email = email;
 		this.googleid = googleid;
-	}
-	
-	
-	public User(String email, String googleid, String telephone) {
-		super();
-		this.email = email;
-		this.googleid = googleid;
-		this.telephone = telephone;
 	}
 
 	public Integer getIduser() {
@@ -73,15 +60,5 @@ public class User {
 	public void setIdauthy(Integer idauthy) {
 		this.idauthy = idauthy;
 	}
-
-	public String getTelephone() {
-		return telephone;
-	}
-
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
-	
-	
 
 }

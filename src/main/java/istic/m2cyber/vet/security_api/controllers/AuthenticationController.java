@@ -91,16 +91,10 @@ public class AuthenticationController {
 			String email = (String) ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttributes()
 					.get("email");
 
-			List<PhoneNumber> listetel = this.utils.getPhoneNumbers(authentication, this.authorizedClientService, this.client_id, this.client_secret);
-
-			if (listetel == null)
+			
 				this.userservice.save(
 						new User(this.utils.StringInHashWithSalt(email), this.utils.StringInHashWithSalt(user_id)));
-			else {
-				String tel = listetel.get(0).getValue();
-				this.userservice.save(new User(this.utils.StringInHashWithSalt(email),
-						this.utils.StringInHashWithSalt(user_id), this.utils.StringInHashWithSalt(tel)));
-			}
+			
 			this.logservice.save(new Log(this.utils.StringInHashWithSalt(user_id), now));
 
 		} else

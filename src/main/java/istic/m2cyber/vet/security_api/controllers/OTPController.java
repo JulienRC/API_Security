@@ -182,7 +182,7 @@ public class OTPController {
 		}
 
 		u.setIdauthy(user.getId());
-		u.setTelephone(phone);
+	
 		userservice.save(u);
 		return "redirect:/";
 	}

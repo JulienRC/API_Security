@@ -18,19 +18,24 @@ import istic.m2cyber.vet.security_api.utils.Utils;
 
 @Controller
 public class LogController {
-	
+
 	@Autowired
 	private LogService logService;
-	
+
 	private Utils utils;
+
+	public LogController() {
+
+		utils = new Utils();
+	}
 
 	@GetMapping({ "/log" })
 	public String log(Authentication authentication, Model model) {
-		
+
 		if (authentication == null)
 			model.addAttribute("isConnected", false);
 		else {
-			
+
 			OAuth2User user = ((OAuth2AuthenticationToken) authentication).getPrincipal();
 
 			model.addAttribute("first_name", user.getAttribute("given_name"));
@@ -38,14 +43,12 @@ public class LogController {
 			model.addAttribute("email", user.getAttribute("email"));
 			model.addAttribute("picture", user.getAttribute("picture"));
 			model.addAttribute("isConnected", true);
-			
-			// LOG 
-			utils = new Utils();
+
 			List<Log> listLogDB = logService.findByGoogleid(utils.StringInHashWithSalt(user.getAttribute("sub")));
 			List<String> list = new ArrayList<String>();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			for(Log log : listLogDB) {
-		        list.add(log.getDate().format(formatter));
+			for (Log log : listLogDB) {
+				list.add(log.getDate().format(formatter));
 			}
 			model.addAttribute("logs", list);
 		}
