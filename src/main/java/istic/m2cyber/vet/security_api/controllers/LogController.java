@@ -44,7 +44,7 @@ public class LogController {
 			model.addAttribute("picture", user.getAttribute("picture"));
 			model.addAttribute("isConnected", true);
 
-			List<Log> listLogDB = logService.findByGoogleid(utils.StringInHashWithSalt(user.getAttribute("sub")));
+			List<Log> listLogDB = logService.findByGoogleid(utils.StringInHashWithSalt((String) user.getAttribute("sub")));
 			List<String> list = new ArrayList<String>();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			for (Log log : listLogDB) {
