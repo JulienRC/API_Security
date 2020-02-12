@@ -2,7 +2,6 @@ package istic.m2cyber.vet.security_api.controllers;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,9 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
-
-import com.google.api.services.people.v1.model.PhoneNumber;
 
 import istic.m2cyber.vet.security_api.models.Log;
 import istic.m2cyber.vet.security_api.models.User;
@@ -37,19 +32,16 @@ public class AuthenticationController {
 
 	@Autowired
 	private LogService logservice;
-	
+
 	private Utils utils;
-	
+
 	@Value("${spring.security.oauth2.client.registration.google.client-id}")
 	private String client_id;
 
 	@Value("${spring.security.oauth2.client.registration.google.client-secret}")
 	private String client_secret;
 
-	private final OAuth2AuthorizedClientService authorizedClientService;
-
-	public AuthenticationController(OAuth2AuthorizedClientService authorizedClientService) {
-		this.authorizedClientService = authorizedClientService;
+	public AuthenticationController() {
 		this.utils = new Utils();
 	}
 
@@ -91,10 +83,9 @@ public class AuthenticationController {
 			String email = (String) ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttributes()
 					.get("email");
 
-			
-				this.userservice.save(
-						new User(this.utils.StringInHashWithSalt(email), this.utils.StringInHashWithSalt(user_id)));
-			
+			this.userservice
+					.save(new User(this.utils.StringInHashWithSalt(email), this.utils.StringInHashWithSalt(user_id)));
+
 			this.logservice.save(new Log(this.utils.StringInHashWithSalt(user_id), now));
 
 		} else

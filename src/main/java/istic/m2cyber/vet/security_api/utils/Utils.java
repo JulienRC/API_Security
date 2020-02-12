@@ -15,6 +15,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.people.v1.PeopleService;
+import com.google.api.services.people.v1.PeopleService.People.Get;
 import com.google.api.services.people.v1.model.Person;
 import com.google.api.services.people.v1.model.PhoneNumber;
 
@@ -38,19 +39,20 @@ public class Utils {
 		}
 		return output;
 	}
-	
+
 	/**
 	 * This method allows to get phone numbers of one user.
-	 * @param authentication Contains informations about user.
+	 * 
+	 * @param authentication                Contains informations about user.
 	 * @param oauth2AuthorizedClientService Allows to get token.
 	 * @return Null if the user don't have phone number, a list otherwise.
 	 * @throws IOException
 	 */
 	public List<PhoneNumber> getPhoneNumbers(Authentication authentication,
-			OAuth2AuthorizedClientService oauth2AuthorizedClientService, String client_id, String client_secret) throws IOException {
-		
+			OAuth2AuthorizedClientService oauth2AuthorizedClientService, String client_id, String client_secret) {
+
 		OAuth2AuthenticationToken oauth2AuthToken = ((OAuth2AuthenticationToken) authentication);
-		
+
 		// We get access token in order to used it with PeopleService class.
 		OAuth2AccessToken access_token = oauth2AuthorizedClientService
 				.loadAuthorizedClient(oauth2AuthToken.getAuthorizedClientRegistrationId(), oauth2AuthToken.getName())
@@ -62,13 +64,25 @@ public class Utils {
 
 		PeopleService peopleService = new PeopleService.Builder(new NetHttpTransport(), new JacksonFactory(),
 				credential).build();
-		
+
 		// We get the profile of the user.
-		Person profile = peopleService.people().get("people/me").setRequestMaskIncludeField("person.phone_numbers")
-				.execute();
+		Get get;
 		
-		// Return a list of phone number or null.
-		return profile.getPhoneNumbers();
+		try {
+			get = peopleService.people().get("people/me");
+			
+			// We get informations about the user.
+			Person person = get.setRequestMaskIncludeField("person.phone_numbers").execute();
+
+			// Return a list of phone number or null.
+			return person.getPhoneNumbers();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+
 	}
 
 }
