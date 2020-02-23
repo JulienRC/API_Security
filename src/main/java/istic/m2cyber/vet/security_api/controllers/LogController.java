@@ -29,7 +29,7 @@ public class LogController {
 		utils = new Utils();
 	}
 
-	@GetMapping({ "/log" })
+	@GetMapping({ "/history" })
 	public String log(Authentication authentication, Model model) {
 
 		if (authentication == null)
@@ -52,6 +52,6 @@ public class LogController {
 			}
 			model.addAttribute("logs", list);
 		}
-		return "log";
+		return "history";
 	}
 }

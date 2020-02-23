@@ -125,7 +125,7 @@ public class OTPController {
 		if (verify.isOk()) {
 			System.out.println(verify.toMap());
 			System.out.println("GOOD OTP !");
-			return "redirect:/log";
+			return "redirect:/history";
 		} else {
 			System.out.println(verify.getError());
 			System.out.println("BAD OTP !");
