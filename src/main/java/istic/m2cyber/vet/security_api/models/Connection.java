@@ -9,22 +9,22 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 
 @Entity
-@Table(name = "Log")
-public class Log {
+@Table(name = "connection")
+public class Connection {
 	
 	@Id 
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer idlog;
+	private Integer idconnection;
 	
 	private String googleid;
 
 	private LocalDateTime date;
 	
-	public Log(){	
+	public Connection(){	
 	}
 
 
-	public Log(String googleid, LocalDateTime date) {
+	public Connection(String googleid, LocalDateTime date) {
 		super();
 		this.googleid = googleid;
 		this.date = date;
@@ -32,11 +32,11 @@ public class Log {
 	
 
 	public Integer getIdlog() {
-		return idlog;
+		return idconnection;
 	}
 
 	public void setIdlog(Integer idlog) {
-		this.idlog = idlog;
+		this.idconnection = idlog;
 	}
 
 	public String getGoogleid() {

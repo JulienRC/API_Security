@@ -12,15 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import istic.m2cyber.vet.security_api.models.Log;
-import istic.m2cyber.vet.security_api.service.LogService;
+import istic.m2cyber.vet.security_api.models.Connection;
+import istic.m2cyber.vet.security_api.service.ConnectionService;
 import istic.m2cyber.vet.security_api.utils.Utils;
 
 @Controller
 public class LogController {
 
 	@Autowired
-	private LogService logService;
+	private ConnectionService logService;
 
 	private Utils utils;
 
@@ -44,10 +44,10 @@ public class LogController {
 			model.addAttribute("picture", user.getAttribute("picture"));
 			model.addAttribute("isConnected", true);
 
-			List<Log> listLogDB = logService.findByGoogleid(utils.StringInHashWithSalt((String) user.getAttribute("sub")));
+			List<Connection> listLogDB = logService.findByGoogleid(utils.StringInHashWithSalt((String) user.getAttribute("sub")));
 			List<String> list = new ArrayList<String>();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			for (Log log : listLogDB) {
+			for (Connection log : listLogDB) {
 				list.add(log.getDate().format(formatter));
 			}
 			model.addAttribute("logs", list);

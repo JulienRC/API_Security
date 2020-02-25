@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
-import istic.m2cyber.vet.security_api.models.Log;
+import istic.m2cyber.vet.security_api.models.Connection;
 import istic.m2cyber.vet.security_api.models.User;
-import istic.m2cyber.vet.security_api.service.LogService;
+import istic.m2cyber.vet.security_api.service.ConnectionService;
 import istic.m2cyber.vet.security_api.service.UserService;
 import istic.m2cyber.vet.security_api.utils.Utils;
 
@@ -31,7 +31,7 @@ public class AuthenticationController {
 	private UserService userservice;
 
 	@Autowired
-	private LogService logservice;
+	private ConnectionService logservice;
 
 	private Utils utils;
 
@@ -86,10 +86,10 @@ public class AuthenticationController {
 			this.userservice
 					.save(new User(this.utils.StringInHashWithSalt(email), this.utils.StringInHashWithSalt(user_id)));
 
-			this.logservice.save(new Log(this.utils.StringInHashWithSalt(user_id), now));
+			this.logservice.save(new Connection(this.utils.StringInHashWithSalt(user_id), now));
 
 		} else
-			this.logservice.save(new Log(this.utils.StringInHashWithSalt(user_id), now));
+			this.logservice.save(new Connection(this.utils.StringInHashWithSalt(user_id), now));
 
 		// Allows to get base of url (ex.: http://example.com/).
 		String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
