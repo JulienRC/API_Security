@@ -121,14 +121,19 @@ public class OTPController {
 
 		Tokens tokens = client.getTokens();
 		Token verify = tokens.verify(u.getIdauthy(), otp);
-
-		if (verify.isOk()) {
-			System.out.println(verify.toMap());
-			System.out.println("GOOD OTP !");
-			return "redirect:/history";
-		} else {
-			System.out.println(verify.getError());
-			System.out.println("BAD OTP !");
+		
+		if(diffTimestamp < otpValidityTime) {
+			if (verify.isOk()) {
+				System.out.println(verify.toMap());
+				System.out.println("GOOD OTP !");
+				return "redirect:/history";
+			} else {
+				System.out.println(verify.getError());
+				System.out.println("BAD OTP !");
+				return "redirect:/errorLog";
+			}
+		}else {
+			System.out.println("OTP expired !");
 			return "redirect:/errorLog";
 		}
 
